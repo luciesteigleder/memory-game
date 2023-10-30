@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cardClass } from "./icons";
+import { cardClass } from "../icons";
 
-const Card = ({ index, icon, position, handleCardClick }) => {
+const CardSides = ({ index, icon, position, handleCardClick }) => {
   const handleClick = () => {
     if (position === "back") {
       handleCardClick(index);
@@ -18,4 +18,4 @@ const Card = ({ index, icon, position, handleCardClick }) => {
   );
 };
 
-export default Card;
+export default CardSides;

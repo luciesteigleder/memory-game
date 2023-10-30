@@ -59,4 +59,12 @@ header {
   visibility: hidden;
 }
 
+#success {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 645px;
+  height: 645px;
+}
+
 /*# sourceMappingURL=index.css.map */
