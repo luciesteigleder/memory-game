@@ -1,13 +1,62 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;700&display=swap");
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  font-family: "Signika Negative", sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+header {
+  width: 100vw;
+  background-color: darkslategray;
+  color: white;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.container {
+  padding: 75px;
+  width: 645px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  gap: 15px 15px;
+  grid-template-areas: "card1-1 card1-2 card1-3 card1-4" "card2-1 card2-2 card2-3 card2-4" "card3-1 card3-2 card3-3 card3-4" "card4-1 card4-2 card4-3 card4-4";
+}
+.container .card {
+  border: 1px solid black;
+  border-radius: 8px;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container .card.back {
+  background-color: firebrick;
+}
+.container .card.back svg {
+  color: firebrick;
+  font-size: 38px;
+}
+.container .card.front {
+  background-color: firebrick;
+}
+.container .card.front svg {
+  color: white;
+  font-size: 38px;
+}
+.container .card.done {
+  visibility: hidden;
+}
+
+/*# sourceMappingURL=index.css.map */
