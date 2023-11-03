@@ -43,8 +43,6 @@ const Game = () => {
   const compareCards = (array) => {
     const firstCard = iconsArray[array[0]].iconName;
     const secondCard = iconsArray[array[1]].iconName;
-    // console.log("first card " + firstCard);
-    // console.log("second card " + secondCard);
 
     if (firstCard === secondCard) {
       console.log("YOU WIIIIIIIIN");
@@ -58,22 +56,13 @@ const Game = () => {
       const updatedSides = [...cardSides];
       updatedSides[array[0]] = false;
       updatedSides[array[1]] = false;
-      // console.log(updatedSides);
       setCardSides((cardSides) => updatedSides);
-
-      // if (success === 7) {
-
-      //   gameEnd();
-      // }
-      // } else {
-      //   resetCardPositions(cardSides);
     } else {
       console.log("sorry, not this time");
       array.forEach((index) => {
         resetCardPositions(index);
       });
     }
-    // console.log(cardSides);
   };
 
   const resetCardPositions = (index) => {
