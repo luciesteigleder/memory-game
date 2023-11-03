@@ -1,6 +1,6 @@
-import CardSides from "./Components/cardSides/CardSides";
-import { iconsList, iconsOrder, shuffle } from "./Components/icons";
-import { useState, useEffect } from "react";
+import CardsContainer from "./Components/Cards";
+import { iconsList, iconsOrder, shuffle, cardClass } from "./Components/icons";
+import { React, useState, useEffect, useRef } from "react";
 
 let isEventListenerActive = true;
 
@@ -15,30 +15,15 @@ console.log("order of the cards");
 console.log(iconsArray);
 
 const Game = () => {
-  const [frontCount, setFrontCount] = useState(0); // we count how many cards are turned on their front.
-  const [cardPositions, setCardPositions] = useState(Array(16).fill("back")); // array to track card positions
+  const isInitialMount = useRef(true);
+  const [cardSides, setCardSides] = useState(Array(16).fill(false));
   const [attempts, setAttemps] = useState(0);
   const [success, setSuccess] = useState(0);
 
-  const handleCardClick = (index) => {
-    if (!isEventListenerActive) {
-      return;
-    }
-    console.log("handle click function");
-    setFrontCount((prevCount) => prevCount + 1);
-    updateCardPosition(index, "front");
-  };
-
-  const updateCardPosition = (index, newposition) => {
-    const updatedPositions = [...cardPositions];
-    updatedPositions[index] = newposition;
-    setCardPositions(updatedPositions);
-  };
-
   const getIndexOfCards = () => {
     let cardsToCompare = [];
-    cardPositions.map((element, index) => {
-      if (element === "front") {
+    cardSides.map((element, index) => {
+      if (element === true) {
         cardsToCompare.push(index);
       }
       return cardsToCompare;
@@ -46,69 +31,89 @@ const Game = () => {
     return cardsToCompare;
   };
 
-  const setCardsAsDone = () => {
-    setTimeout(() => {
-      const updatedPositions = [...cardPositions].map((position) => {
-        if (position === "front" || position === "done") {
-          return "done";
-        } else {
-          return "back";
-        }
-      });
-      setCardPositions(updatedPositions);
-    }, 500);
-  };
-
-  const gameEnd = () => {
-    console.log("you won!");
-    const game = document.querySelector("#game");
-    game.style.display = "none";
-
-    const congratMessage = document.querySelector("#success");
-    congratMessage.style.display = "flex";
+  const whatToDoWhenCardIsClicked_GameEdition = (index, isCardReturned) => {
+    if (!isEventListenerActive) {
+      return;
+    }
+    const updatedSides = [...cardSides];
+    updatedSides[index] = !isCardReturned;
+    setCardSides((cardSides) => updatedSides);
   };
 
   const compareCards = (array) => {
     const firstCard = iconsArray[array[0]].iconName;
     const secondCard = iconsArray[array[1]].iconName;
+    // console.log("first card " + firstCard);
+    // console.log("second card " + secondCard);
 
     if (firstCard === secondCard) {
       console.log("YOU WIIIIIIIIN");
-      setCardsAsDone();
       isEventListenerActive = true;
       setSuccess((success) => success + 1);
       console.log("success " + success);
-      if (success === 7) {
-        gameEnd();
-      }
+      array.forEach((index) => {
+        changeCardsAsDone(index);
+      });
+      //put them back as false in cardsides
+      const updatedSides = [...cardSides];
+      updatedSides[array[0]] = false;
+      updatedSides[array[1]] = false;
+      // console.log(updatedSides);
+      setCardSides((cardSides) => updatedSides);
+
+      // if (success === 7) {
+
+      //   gameEnd();
+      // }
+      // } else {
+      //   resetCardPositions(cardSides);
     } else {
-      resetCardPositions(cardPositions);
+      console.log("sorry, not this time");
+      array.forEach((index) => {
+        resetCardPositions(index);
+      });
+    }
+    // console.log(cardSides);
+  };
+
+  const resetCardPositions = (index) => {
+    setTimeout(() => {
+      isEventListenerActive = true;
+      unblockOtherCards(isEventListenerActive);
+      const cardToTurnBack = document
+        .querySelector(`.card[id="${index}"]`)
+        .click();
+    }, 1500);
+  };
+
+  const blockOtherCards = (isEventListenerActive) => {
+    if (!isEventListenerActive) {
+      for (let i = 0; i < cardSides.length; i++) {
+        if (cardSides[i] === false) {
+          const cardToBlock = document.querySelector(`.card[id="${i}"]`);
+          cardToBlock.classList.add("blocked");
+        }
+      }
     }
   };
 
-  useEffect(() => {
-    if (frontCount === 2) {
-      isEventListenerActive = false;
-      setAttemps((attempts) => attempts + 1);
-      setFrontCount(0);
-      const cardsToCompare = getIndexOfCards();
-      compareCards(cardsToCompare);
+  const unblockOtherCards = (isEventListenerActive) => {
+    if (isEventListenerActive) {
+      for (let i = 0; i < cardSides.length; i++) {
+        const cardToBlock = document.querySelector(`.card[id="${i}"]`);
+        cardToBlock.classList.remove("blocked");
+      }
     }
-  }, [frontCount]);
+  };
 
-  const resetCardPositions = () => {
+  const changeCardsAsDone = (index) => {
     setTimeout(() => {
       isEventListenerActive = true;
-      const updatedPositions = [...cardPositions].map((position) => {
-        if (position === "done") {
-          return "done";
-        } else if (position === "front") {
-          return "back";
-        } else if (position === "back") {
-          return "back";
-        }
-      });
-      setCardPositions(updatedPositions);
+      unblockOtherCards(isEventListenerActive);
+      const cardToChangeAsDone = document.querySelector(`.card[id="${index}"]`);
+      cardToChangeAsDone.className = "";
+      cardToChangeAsDone.classList.add("card");
+      cardToChangeAsDone.classList.add("done");
     }, 1000);
   };
 
@@ -116,27 +121,58 @@ const Game = () => {
     window.location.reload(false);
   };
 
+  // change the count when cardsides is updated
+  useEffect(() => {
+    let count = cardSides.filter(Boolean).length;
+
+    //when there's 2 cards returned, we block the others and compare them
+    if (count === 2) {
+      isEventListenerActive = false;
+      console.log("now!");
+      blockOtherCards(isEventListenerActive);
+      setAttemps((attempts) => attempts + 1);
+
+      //we compare the two cards together
+      const cardsToCompare = getIndexOfCards();
+      compareCards(cardsToCompare);
+    }
+  }, [cardSides]);
+
+  // successes
+  useEffect(() => {
+    console.log("successes: " + success);
+    if (success === 8) {
+      console.log("you won!");
+      const game = document.querySelector("#game");
+      game.style.display = "none";
+
+      const congratMessage = document.querySelector("#success");
+      congratMessage.style.display = "flex";
+    }
+  }, [success]);
+
   return (
     <>
       <section id="game">
         <div className="container">
           {/* this function will generate the 16 different cards: we create an array of 16 empty values, and iterate through it */}
           {Array.from({ length: 16 }).map((_, i) => (
-            <CardSides
+            <CardsContainer
               key={i}
               index={i}
               icon={shuffledList[shuffledOrder[i]]}
-              position={cardPositions[i]} // pass the position as a prop to the Card component
-              handleCardClick={handleCardClick}
+              whatToDoWhenCardIsClicked_cardContainerEdition={
+                whatToDoWhenCardIsClicked_GameEdition
+              } //this is a function that is passed as a prop
             />
           ))}
         </div>
         <section id="otherInfos">
           <div className="infos">
-            <p>attempts: {attempts}</p>
-            <p>successes: {success}</p>
+            <p>Attempts: {attempts}</p>
+            <p>Matchs: {success}</p>
           </div>
-          <div className="startButtonDi">
+          <div className="startButtonD">
             <button className="start" onClick={refreshPage}>
               Start Again
             </button>
@@ -155,7 +191,8 @@ const Game = () => {
 
 export default Game;
 
-// During the whole game:
-// Nice to add: timer ?
+// What do I still need to do:
+// transitions for cards done
+// end of the game => transition of the you win message
 
-// Animation to flip the card: https://www.youtube.com/watch?v=9uwZkqoFAfg
+// Nice to add: timer ?

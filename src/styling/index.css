@@ -1,4 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;700&display=swap");
+/*
+
+isCardReturned = false -> true
+back -> front
+
+*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -10,6 +16,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.App #game {
+  display: flex;
+  padding: 75px;
 }
 
 header {
@@ -24,39 +34,100 @@ header {
 }
 
 .container {
-  padding: 75px;
-  width: 645px;
+  width: 445px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   gap: 15px 15px;
   grid-template-areas: "card1-1 card1-2 card1-3 card1-4" "card2-1 card2-2 card2-3 card2-4" "card3-1 card3-2 card3-3 card3-4" "card4-1 card4-2 card4-3 card4-4";
 }
-.container .card {
-  border: 1px solid black;
+.container .cardContainer {
   border-radius: 8px;
   height: 100px;
   width: 100px;
+  perspective: 500px;
+}
+.container .cardContainer .card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 1000ms;
+}
+.container .cardContainer .card.done {
+  visibility: hidden;
+}
+.container .cardContainer .card.flip-exit {
+  transform: rotateY(0deg);
+}
+.container .cardContainer .card.flip-exit-active {
+  transform: rotateY(180deg);
+  transition: transform 300;
+}
+.container .cardContainer .card.flip-exit-done {
+  transform: rotateY(180deg);
+}
+.container .cardContainer .card.flip-enter {
+  transform: rotateY(180deg);
+}
+.container .cardContainer .card.flip-enter-active {
+  transform: rotateY(0deg);
+  transition: transform 300;
+}
+.container .cardContainer .card.flip-enter-done {
+  transform: rotateY(0deg);
+}
+.container .cardContainer .card.blocked {
+  pointer-events: none;
+  transition: none;
+}
+.container .cardContainer .card .backside {
+  border-radius: 8px;
+  position: absolute;
+  background-color: firebrick;
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+}
+.container .cardContainer .card .backside svg {
+  color: firebrick;
+}
+.container .cardContainer .card .frontside {
+  border-radius: 8px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: rotateY(180deg);
+  border: 1px solid black;
 }
-.container .card.back {
-  background-color: firebrick;
-}
-.container .card.back svg {
+.container .cardContainer .card .frontside svg {
   color: firebrick;
   font-size: 38px;
 }
-.container .card.front {
-  background-color: firebrick;
+
+#otherInfos {
+  margin: 75px;
 }
-.container .card.front svg {
+#otherInfos .infos p {
+  margin-bottom: 10px;
+  color: darkslategray;
+}
+#otherInfos button {
+  background-color: darkslategray;
+  border: 1px solid darkslategray;
   color: white;
-  font-size: 38px;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px;
 }
-.container .card.done {
-  visibility: hidden;
+#otherInfos button:hover {
+  border: 1px solid black;
 }
 
 #success {
