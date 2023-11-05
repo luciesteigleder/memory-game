@@ -19,14 +19,14 @@ back -> front
 }
 .App #game {
   display: flex;
-  padding: 75px;
+  padding: 20px;
 }
 
 header {
   width: 100vw;
   background-color: darkslategray;
   color: white;
-  height: 75px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,12 +38,12 @@ header {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 15px 15px;
+  gap: 10px 10px;
   grid-template-areas: "card1-1 card1-2 card1-3 card1-4" "card2-1 card2-2 card2-3 card2-4" "card3-1 card3-2 card3-3 card3-4" "card4-1 card4-2 card4-3 card4-4";
 }
 .container .cardContainer {
   border-radius: 8px;
-  height: 100px;
+  height: 150px;
   width: 100px;
   perspective: 500px;
 }
@@ -92,8 +92,11 @@ header {
   width: 100%;
   height: 100%;
 }
-.container .cardContainer .card .backside svg {
-  color: firebrick;
+.container .cardContainer .card .backside .backside_background {
+  background-color: firebrick;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
 }
 .container .cardContainer .card .frontside {
   border-radius: 8px;
@@ -106,9 +109,14 @@ header {
   transform: rotateY(180deg);
   border: 1px solid black;
 }
+.container .cardContainer .card .frontside img {
+  width: 100%;
+  border-radius: 8px;
+}
 .container .cardContainer .card .frontside svg {
   color: firebrick;
   font-size: 38px;
+  height: 60px;
 }
 
 #otherInfos {

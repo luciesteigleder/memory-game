@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 
 const CardsContainer = ({
   index, //these are what we get from the parent component
-  icon,
+  // icon,
+  cardContent,
   whatToDoWhenCardIsClicked_cardContainerEdition,
 }) => {
   const [isCardReturned, setIsCardReturned] = useState(false);
@@ -30,7 +31,8 @@ const CardsContainer = ({
       <CSSTransition in={!isCardReturned} timeout={300} classNames="flip">
         <CardSides
           index={index}
-          icon={icon}
+          // icon={icon}
+          cardContent={cardContent}
           whatToDoWhenCardIsClicked={whatToDoWhenCardIsClicked_here}
         />
       </CSSTransition>

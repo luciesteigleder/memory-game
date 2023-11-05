@@ -1,18 +1,36 @@
 import CardsContainer from "./Components/Cards";
 import { iconsList, iconsOrder, shuffle, cardClass } from "./Components/icons";
+import getFinalOrder from "./Components/movies";
 import { React, useState, useEffect, useRef } from "react";
+import movieData from "./data/movieData.json";
 
 let isEventListenerActive = true;
 
-const shuffledList = shuffle(iconsList); //we randomize the list of icons
-const shuffledOrder = shuffle(iconsOrder); //we randomize the order of icons
-let iconsArray = [];
+// const orderMovies = selectRandomNumbers();
+// // console.log("order movies");
+// // console.log(orderMovies);
+// const moviesArray = [];
 
-for (let i = 0; i < 16; i++) {
-  iconsArray.push(shuffledList[shuffledOrder[i]]);
-}
-console.log("order of the cards");
-console.log(iconsArray);
+// const getData = () => {
+//   for (let i = 0; i < orderMovies.length; i++) {
+//     moviesArray.push(movieData[orderMovies[i]]);
+//   }
+//   console.log(moviesArray);
+// };
+
+// getData();
+
+// const shuffledList = shuffle(iconsList); //we randomize the list of icons
+// const shuffledOrder = shuffle(iconsOrder); //we randomize the order of icons
+// let iconsArray = [];
+
+// for (let i = 0; i < 16; i++) {
+//   iconsArray.push(shuffledList[shuffledOrder[i]]);
+// }
+// console.log("order of the cards");
+// console.log(iconsArray);
+
+const finalOrder = getFinalOrder(movieData);
 
 const Game = () => {
   const isInitialMount = useRef(true);
@@ -41,8 +59,8 @@ const Game = () => {
   };
 
   const compareCards = (array) => {
-    const firstCard = iconsArray[array[0]].iconName;
-    const secondCard = iconsArray[array[1]].iconName;
+    const firstCard = finalOrder[array[0]].movieKey;
+    const secondCard = finalOrder[array[1]].movieKey;
 
     if (firstCard === secondCard) {
       console.log("YOU WIIIIIIIIN");
@@ -149,7 +167,7 @@ const Game = () => {
             <CardsContainer
               key={i}
               index={i}
-              icon={shuffledList[shuffledOrder[i]]}
+              cardContent={finalOrder[i]}
               whatToDoWhenCardIsClicked_cardContainerEdition={
                 whatToDoWhenCardIsClicked_GameEdition
               } //this is a function that is passed as a prop
@@ -158,6 +176,11 @@ const Game = () => {
         </div>
         <section id="otherInfos">
           <div className="infos">
+            {/* {iconURL ? (
+              <img src={iconURL} alt="Icon" />
+            ) : (
+              <span>Loading...</span>
+            )}{" "} */}
             <p>Attempts: {attempts}</p>
             <p>Matchs: {success}</p>
           </div>
@@ -185,3 +208,11 @@ export default Game;
 // end of the game => transition of the you win message
 
 // Nice to add: timer ?
+
+// chien
+//cheval
+//oiseau
+//vache
+//poisson
+//lapin
+//wombat
