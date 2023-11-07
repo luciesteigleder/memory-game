@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 
 const CardSides = ({
   index, // those are what we get from the cards (parent) component
-  // icon,
   cardContent,
   whatToDoWhenCardIsClicked,
 }) => {
@@ -20,7 +19,7 @@ const CardSides = ({
     }
   };
 
-  // console.log(cardContent);
+  console.log(index, cardContent.movieTitle);
 
   return (
     <div className={`card `} id={`${index}`} onClick={handleClick}>

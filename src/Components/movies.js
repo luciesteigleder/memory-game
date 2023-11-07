@@ -25,11 +25,13 @@ const createDuos = (array) => {
   array.forEach((movie) => {
     const moviePicture = {};
     moviePicture.type = "picture";
+    moviePicture.movieTitle = movie.movieTitle;
     moviePicture.URL = movie.movieURL;
     moviePicture.movieKey = movie.movieKey;
 
     const movieObject = {};
     movieObject.type = "object";
+    movieObject.movieTitle = movie.movieTitle;
     movieObject.URL = movie.objectSVG;
     movieObject.comment = movie.objectSVGComment;
     movieObject.movieKey = movie.movieKey;

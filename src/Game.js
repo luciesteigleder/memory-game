@@ -6,30 +6,6 @@ import movieData from "./data/movieData.json";
 
 let isEventListenerActive = true;
 
-// const orderMovies = selectRandomNumbers();
-// // console.log("order movies");
-// // console.log(orderMovies);
-// const moviesArray = [];
-
-// const getData = () => {
-//   for (let i = 0; i < orderMovies.length; i++) {
-//     moviesArray.push(movieData[orderMovies[i]]);
-//   }
-//   console.log(moviesArray);
-// };
-
-// getData();
-
-// const shuffledList = shuffle(iconsList); //we randomize the list of icons
-// const shuffledOrder = shuffle(iconsOrder); //we randomize the order of icons
-// let iconsArray = [];
-
-// for (let i = 0; i < 16; i++) {
-//   iconsArray.push(shuffledList[shuffledOrder[i]]);
-// }
-// console.log("order of the cards");
-// console.log(iconsArray);
-
 const finalOrder = getFinalOrder(movieData);
 
 const Game = () => {
