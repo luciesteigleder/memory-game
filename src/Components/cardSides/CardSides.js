@@ -19,7 +19,7 @@ const CardSides = ({
     }
   };
 
-  console.log(index, cardContent.movieTitle);
+  // console.log(index, cardContent.movieTitle);
 
   return (
     <div className={`card `} id={`${index}`} onClick={handleClick}>

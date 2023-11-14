@@ -1,8 +1,8 @@
 import CardsContainer from "./Components/Cards";
-import { iconsList, iconsOrder, shuffle, cardClass } from "./Components/icons";
 import getFinalOrder from "./Components/movies";
 import { React, useState, useEffect, useRef } from "react";
 import movieData from "./data/movieData.json";
+import Timer from "./Timer";
 
 let isEventListenerActive = true;
 
@@ -13,6 +13,8 @@ const Game = () => {
   const [cardSides, setCardSides] = useState(Array(16).fill(false));
   const [attempts, setAttemps] = useState(0);
   const [success, setSuccess] = useState(0);
+  const [startTimer, setStartTimer] = useState(false);
+  const [restartTimer, setRestartTimer] = useState(false);
 
   const getIndexOfCards = () => {
     let cardsToCompare = [];
@@ -31,7 +33,20 @@ const Game = () => {
     }
     const updatedSides = [...cardSides];
     updatedSides[index] = !isCardReturned;
-    setCardSides((cardSides) => updatedSides);
+    setCardSides(updatedSides);
+
+    if (!startTimer) {
+      setStartTimer(true);
+      handleUnPauseTimer(true);
+    } else if (!restartTimer) {
+      handleUnPauseTimer(true);
+      console.log("restart !!");
+    }
+  };
+
+  const handleUnPauseTimer = (choice) => {
+    setRestartTimer(choice);
+    console.log("ready to restart if clicked on another card ? ", restartTimer);
   };
 
   const compareCards = (array) => {
@@ -165,6 +180,11 @@ const Game = () => {
               Start Again
             </button>
           </div>
+          <Timer
+            startTimer={startTimer}
+            handleUnPauseTimer={handleUnPauseTimer}
+            restartTimer={restartTimer}
+          />
         </section>
       </section>
       <section id="success">
@@ -181,14 +201,9 @@ export default Game;
 
 // What do I still need to do:
 // transitions for cards done
+//give hints? either on the card (hover after 5 sec?) or on the movie name.
+//show objectSVGcomment
+//animate the svg
 // end of the game => transition of the you win message
 
 // Nice to add: timer ?
-
-// chien
-//cheval
-//oiseau
-//vache
-//poisson
-//lapin
-//wombat
